@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StudyBot - Your AI Study Assistant</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>📚 StudyBot</h1>
+        <p>Your AI-powered study assistant for academic queries</p>
+      </div>
+
+      <div class="chat-container">
+        <div class="messages" id="messages">
+          <div class="welcome-message">
+            <h3>Welcome to StudyBot! 🎓</h3>
+            <p>
+              I'm here to help with your academic questions across all subjects.
+              Ask me about:
+            </p>
+            <div class="suggestions">
+              <div
+                class="suggestion-chip"
+                onclick="insertSuggestion('Explain photosynthesis process')"
+              >
+                Biology concepts
+              </div>
+              <div
+                class="suggestion-chip"
+                onclick="insertSuggestion('Solve quadratic equations')"
+              >
+                Math problems
+              </div>
+              <div
+                class="suggestion-chip"
+                onclick="insertSuggestion('World War 2 causes')"
+              >
+                History topics
+              </div>
+              <div
+                class="suggestion-chip"
+                onclick="insertSuggestion('Python programming basics')"
+              >
+                Programming
+              </div>
+              <div
+                class="suggestion-chip"
+                onclick="insertSuggestion('Essay writing tips')"
+              >
+                Study techniques
+              </div>
+            </div>
+            <p>
+              <small
+                >Note: I only respond to study and academic-related
+                questions.</small
+              >
+            </p>
+          </div>
+        </div>
+
+        <div class="input-container">
+          <div class="input-wrapper">
+            <textarea
+              id="messageInput"
+              class="input-field"
+              placeholder="Ask any study-related question..."
+              rows="1"
+            ></textarea>
+            <button id="sendButton" class="send-button" onclick="sendMessage()">
+              <span>▶</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
