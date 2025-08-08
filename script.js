@@ -649,7 +649,7 @@ function addMessage(content, isUser = false) {
 
   const avatar = document.createElement("div");
   avatar.className = "avatar";
-  avatar.textContent = isUser ? "S" : "🤖";
+  avatar.textContent = isUser ? "" : "🤖";
 
   const messageContent = document.createElement("div");
   messageContent.className = "message-content";
