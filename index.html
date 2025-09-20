@@ -8,75 +8,142 @@
     <link rel="icon"type="image/x-icon" href="img/icons8-book-64.png"/>>
   </head>
   <body>
-    <div class="container">
-      <div class="header">
-        <h1>📚 StudyBot</h1>
-        <p>Your AI-powered study assistant for academic queries</p>
-      </div>
-
-      <div class="chat-container">
-        <div class="messages" id="messages">
-          <div class="welcome-message">
-            <h3>Welcome to StudyBot! 🎓</h3>
-            <p>
-              I'm here to help with your academic questions across all subjects.
-              Ask me about:
-            </p>
-            <div class="suggestions">
-              <div
-                class="suggestion-chip"
-                onclick="insertSuggestion('Explain photosynthesis process')"
-              >
-                Biology concepts
-              </div>
-              <div
-                class="suggestion-chip"
-                onclick="insertSuggestion('Solve quadratic equations')"
-              >
-                Math problems
-              </div>
-              <div
-                class="suggestion-chip"
-                onclick="insertSuggestion('World War 2 causes')"
-              >
-                History topics
-              </div>
-              <div
-                class="suggestion-chip"
-                onclick="insertSuggestion('Python programming basics')"
-              >
-                Programming
-              </div>
-              <div
-                class="suggestion-chip"
-                onclick="insertSuggestion('Essay writing tips')"
-              >
-                Study techniques
-              </div>
+<div class="container">
+        <div class="header">
+            <div class="header-left">
+                <button class="desktop-sidebar-toggle" id="desktopToggle" onclick="toggleSidebar()" title="Toggle sidebar">
+                    <span id="toggleIcon">◧</span>
+                </button>
+                <div class="header-title">
+                    <h1>📚 StudyBot</h1>
+                    <p>Your AI-powered study assistant for academic queries</p>
+                </div>
             </div>
-            <p>
-              <small
-                >Note: I only respond to study and academic-related
-                questions.</small
-              >
-            </p>
-          </div>
+            <!-- Mobile hamburger menu -->
+            <button class="mobile-sidebar-toggle" onclick="toggleSidebar()">☰</button>
+            <div class="header-right">
+                <div id="userInfo" class="user-info" style="display: none;">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <span id="userName">User</span>
+                </div>
+                <div id="authButtons" class="auth-buttons">
+                    <button class="btn btn-secondary" onclick="showLoginModal()">Login</button>
+                    <button class="btn btn-primary" onclick="showSignupModal()">Sign Up</button>
+                </div>
+                <button id="logoutBtn" class="btn btn-secondary" onclick="logout()" style="display: none;">
+                    Logout
+                </button>
+            </div>
         </div>
+        
+        <div class="main-content">
+            <div id="sidebar" class="sidebar">
+                <div class="sidebar-header">
+                    <div>
+                        <h3>Chat History</h3>
+                        <button class="new-chat-btn" onclick="startNewChat()">+ New Chat</button>
+                    </div>
+                </div>
+                <div class="chat-history" id="chatHistory">
+                    <!-- Chat history will be populated here -->
+                </div>
+            </div>
+            
+            <div class="chat-container">
+                <div class="messages" id="messages">
+                    <div class="welcome-message" id="welcomeMessage">
+                        <h3>Welcome to StudyBot! 🎓</h3>
+                        <p>I'm here to help with your academic questions across all subjects. Ask me about:</p>
+                        <div class="suggestions">
+                            <div class="suggestion-chip" onclick="insertSuggestion('Explain photosynthesis process')">Biology concepts</div>
+                            <div class="suggestion-chip" onclick="insertSuggestion('Solve quadratic equations')">Math problems</div>
+                            <div class="suggestion-chip" onclick="insertSuggestion('World War 2 causes')">History topics</div>
+                            <div class="suggestion-chip" onclick="insertSuggestion('Python programming basics')">Programming</div>
+                            <div class="suggestion-chip" onclick="insertSuggestion('Essay writing tips')">Study techniques</div>
+                        </div>
+                        <p><small>Note: I only respond to study and academic-related questions.</small></p>
+                        <div style="margin-top: 15px; padding: 10px; background: rgba(79, 70, 229, 0.1); border-radius: 10px;">
+                            <p><strong>💡 Tip:</strong> <span id="loginTip">Login to save your chat history and continue conversations later!</span></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="input-container">
+                    <div class="input-wrapper">
+                        <textarea 
+                            id="messageInput" 
+                            class="input-field" 
+                            placeholder="Ask any study-related question..."
+                            rows="1"
+                        ></textarea>
+                        <button id="sendButton" class="send-button" onclick="sendMessage()">
+                            <span>▶</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <div class="input-container">
-          <div class="input-wrapper">
-            <textarea
-              id="messageInput"
-              class="input-field"
-              placeholder="Ask any study-related question..."
-              rows="1"
-            ></textarea>
-            <button id="sendButton" class="send-button" onclick="sendMessage()">
-              <span>▶</span>
-            </button>
-          </div>
+    <!-- Mobile sidebar overlay -->
+    <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Login to StudyBot</h2>
+                <p>Continue your learning journey</p>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <div class="form-buttons">
+                    <button type="button" class="btn btn-secondary" onclick="hideModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+            </form>
+            <div class="toggle-auth">
+                Don't have an account? <a href="#" onclick="showSignupModal()">Sign up</a>
+            </div>
         </div>
-      </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Join StudyBot</h2>
+                <p>Start your personalized learning experience</p>
+            </div>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" required minlength="6">
+                </div>
+                <div class="form-buttons">
+                    <button type="button" class="btn btn-secondary" onclick="hideModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                </div>
+            </form>
+            <div class="toggle-auth">
+                Already have an account? <a href="#" onclick="showLoginModal()">Login</a>
+            </div>
+        </div>
     </div>
     <script src="script.js"></script>
   </body>
