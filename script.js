@@ -5,7 +5,7 @@ const messageInput = document.getElementById("messageInput");
 const sendButton = document.getElementById("sendButton");
 
 // ===== GEMINI API CONFIGURATION =====
-const GEMINI_API_KEY = "AIzaSyDHThQib_a-okOyC5LJPHBUTCpmHwca7Zs";
+const GEMINI_API_KEY = "AIzaSyAvmuCHOx0pwhihv-f3vJaePC_Ua78TC8E";
 const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
 
 
