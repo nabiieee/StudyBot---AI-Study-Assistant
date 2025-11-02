@@ -6,8 +6,7 @@ const sendButton = document.getElementById("sendButton");
 
 // ===== GEMINI API CONFIGURATION =====
 const GEMINI_API_KEY = "AIzaSyAvmuCHOx0pwhihv-f3vJaePC_Ua78TC8E";
-const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
-
+const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
 
 // Study-related keywords for validation
@@ -554,9 +553,12 @@ const studyKeywords = [
         
         // Initialize app
         document.addEventListener('DOMContentLoaded', function() {
+            // ensure storage exists, then initialize UI and listeners
+            initializeStorage();
             checkAuthentication();
             setupEventListeners();
-            loadChatHistory();
+            // loadUserChats() exists and loads or starts a chat; loadChatHistory() did not exist
+            loadUserChats();
         });
 
         function checkAuthentication() {
@@ -957,20 +959,45 @@ const studyKeywords = [
             return response + "\n\nI'm here to help with other study topics I know well, like basic math, science concepts, writing tips, or programming fundamentals!";
         }
 
-        // 1. Function to call Gemini API
+        // 1. Function to call Gemini API (improved request, logging and extraction)
 async function getGeminiResponse(message) {
-    const requestBody = {
-        contents: [{ parts: [{ text: message }] }]
-    };
+  const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+  try {
     const response = await fetch(GEMINI_API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(requestBody)
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        contents: [
+          {
+            parts: [{ text: message }],
+          },
+        ],
+      }),
     });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("❌ Gemini API HTTP Error:", response.status, errorText);
+      return "Sorry, I couldn’t get an answer from the Gemini API right now.";
+    }
+
     const data = await response.json();
-    // Gemini API returns the answer in data.candidates[0].content.parts[0].text
-    return data?.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't get an answer from Gemini API.";
+    console.log("✅ Gemini raw response:", data);
+
+    const text =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+      "Sorry, I couldn’t parse the Gemini API response.";
+    return text;
+  } catch (err) {
+    console.error("⚠️ getGeminiResponse error:", err);
+    return "Failed to reach Gemini API. Please try again later.";
+  }
 }
+
+
 
 // 2. Update sendMessage to use Gemini API for study-related questions
 async function sendMessage() {
@@ -980,7 +1007,8 @@ async function sendMessage() {
     
     if (!message) return;
 
-    if (!currentUser && !currentChatId) {
+    // always create a chat id when none exists (previous logic required !currentUser too)
+    if (!currentChatId) {
         currentChatId = generateChatId();
     }
 
